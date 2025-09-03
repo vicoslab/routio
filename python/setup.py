@@ -98,7 +98,9 @@ if os.path.isfile(os.path.join("echolib", "pyecho" + library_suffix)):
 
 elif os.path.isfile(os.path.join("echolib", "echolib", "loop.h")):
     sources = glob.glob("echolib/echolib/*.cpp")
-    varargs["ext_modules"] = [CTypes("echolib.pyecho", sources=sources, include_dirs=[os.path.join(root, "echolib")], define_macros=[("ECHOLIB_EXPORTS", "1")])]
+    args = dict(sources=sources, include_dirs=[os.path.join(root, "echolib"), get_numpy_include(), get_pybind_include()], define_macros=[("ECHOLIB_EXPORTS", "1")])
+    args["language"] = "c++"
+    varargs["ext_modules"] = [CTypes("echolib.pyecho", **args)]
     varargs["cmdclass"] = {'build_ext': build_ext_ctypes}
     varargs["setup_requires"] = ["pybind11>=2.5.0", "numpy>=1.16"]
     varargs["exclude_package_data"] = {'echolib.pyecho': ['*.cpp']}

@@ -46,7 +46,7 @@ void tic();
 
 void toc();
 
-void print_buffer(ostream& output, uint8_t* buffer, size_t length);
+void print_buffer(ostream& output, unsigned char* buffer, size_t length);
 
 std::string format_string(char const* fmt, ...) __attribute__((format(printf,1,2)));
 

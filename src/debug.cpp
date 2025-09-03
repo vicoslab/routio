@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <cstdarg>
+#include <cinttypes>
 #include "debug.h"
 
 using namespace std;
@@ -105,7 +106,7 @@ std::string format_string(char const* fmt, ...) {
     return msg; 
 }
 
-void print_buffer(ostream& output, uint8_t* buffer, size_t length) {
+void print_buffer(ostream& output, unsigned char* buffer, size_t length) {
 
     for (size_t i = 0; i < length; i++) { 
         output << format_string(" %04d: (%#04X) %*d %c", (int) (i), buffer[i], 4, buffer[i], (int) buffer[i]) << std::endl; 

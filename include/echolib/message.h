@@ -14,6 +14,7 @@
 #include <functional>
 #include <iostream>
 #include <type_traits>
+#include <cinttypes>
 
 using namespace std;
 
@@ -38,8 +39,8 @@ using namespace std;
 #define ECHO_COMMAND_CREATE_SERVICE 11
 
 // TODO: move buffer size from a define to a variable that the user can change, since it has an effect on performance
-#define BUFFER_SIZE 1024 * 100
-#define MESSAGE_MAX_SIZE 1024 * 50
+#define BUFFER_SIZE 1024 * 1024 * 2
+#define MESSAGE_MAX_SIZE 1024 * 1024
 #define MESSAGE_MAX_QUEUE 5000
 
 namespace echolib
