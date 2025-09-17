@@ -2,6 +2,7 @@
 #include <sys/socket.h>
 #include <iostream>
 #include <sys/un.h>
+#include <sys/stat.h>
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -274,6 +275,8 @@ Server::Server(SharedIOLoop loop, const std::string& address) : loop(loop) {
 	} else {
 		DEBUGMSG("Binding Unix socket\n");
 		fd = create_and_bind(taddress.c_str());
+		// Change permissions to allow other users to connect
+		chmod(taddress.c_str(), 0666);
 	}
 
 	if (fd == -1)
