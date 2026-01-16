@@ -12,18 +12,18 @@ from future.utils import bytes_to_native_str
 
 standard_library.install_aliases()
 try:
-    import routio.pyroutio as _echo
+    import routio.pyroutio as _wrapper
 except ImportError as ie:
     raise ImportError("Routio binary library not found", ie)
 
-IOLoop = _echo.IOLoop
-IOBase = _echo.IOBase
-IOBaseObserver = _echo.IOBaseObserver
-Client = _echo.Client
-Publisher = _echo.Publisher
-Subscriber = _echo.Subscriber
-MessageReader = _echo.MessageReader
-MessageWriter = _echo.MessageWriter
+IOLoop = _wrapper.IOLoop
+IOBase = _wrapper.IOBase
+IOBaseObserver = _wrapper.IOBaseObserver
+Client = _wrapper.Client
+Publisher = _wrapper.Publisher
+Subscriber = _wrapper.Subscriber
+MessageReader = _wrapper.MessageReader
+MessageWriter = _wrapper.MessageWriter
 
 double = type(bytes_to_native_str(b'double'), (), {})
 char = type(bytes_to_native_str(b'char'), (), {})
@@ -31,8 +31,8 @@ long = type(bytes_to_native_str(b'long'), (), {})
 
 _type_registry = {}
 
-def router(address="/tmp/echo.sock", verbose=False):
-    _echo.router(address, verbose)
+def router(address="/tmp/routio.sock", verbose=False):
+    _wrapper.router(address, verbose)
 
 def registerType(cls, read, write, convert=None):
     if cls.__name__ in _type_registry:
@@ -74,7 +74,7 @@ registerType(bool, lambda x: x.readBool(), lambda x, o: x.writeBool(o), convertB
 
 import datetime
 
-registerType(datetime.datetime, _echo.readTimestamp, _echo.writeTimestamp)
+registerType(datetime.datetime, _wrapper.readTimestamp, _wrapper.writeTimestamp)
 
 def readList(cls, reader):
     objects = []
@@ -119,7 +119,7 @@ class Dictionary(dict):
             writer.writeString(str(v))
 
     def pack(self):
-        writer = _echo.MessageWriter(4 + sum([ len(k) + len(v) + 8 for k, v in self.items()]))
+        writer = _wrapper.MessageWriter(4 + sum([ len(k) + len(v) + 8 for k, v in self.items()]))
         self.write(writer)
         return writer
 
@@ -192,27 +192,26 @@ class Header(object):
 
 registerType(Header, Header.read, Header.write)
 
-class DictionarySubscriber(_echo.Subscriber):
+class DictionarySubscriber(_wrapper.Subscriber):
 
     def __init__(self, client, alias, callback):
         def _read(message):
-            reader = _echo.MessageReader(message)
+            reader = _wrapper.MessageReader(message)
             return Dictionary.read(reader)
 
         super().__init__(client, alias, "dictionary", lambda x: callback(_read(x)))
 
-class DictionaryPublisher(_echo.Publisher):
+class DictionaryPublisher(_wrapper.Publisher):
 
     def __init__(self, client, alias):
         super().__init__(client, alias, "dictionary")
 
     def send(self, obj):
-        writer = _echo.MessageWriter()
+        writer = _wrapper.MessageWriter()
         Dictionary.write(writer, obj)
         super().send(writer)
 
-class SubscriptionWatcher(_echo.Watcher):
-
+class SubscriptionWatcher(_wrapper.Watcher):
     def __init__(self, client, alias, callback=None, watch=True):
         super().__init__(client, alias)
         #self._callback = callback

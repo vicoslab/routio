@@ -59,7 +59,7 @@ namespace routio
             }
             else
             {
-                temp = "/tmp/echo.sock";
+                temp = "/tmp/routio.sock";
             }
         }
 

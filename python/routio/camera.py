@@ -10,7 +10,7 @@ import routio
 import numpy
 
 try:
-    from routio import _echo
+    from routio import _wrapper
 except ImportError as ie:
     raise ImportError("Echo binary library not found", ie)
 
@@ -27,16 +27,16 @@ class CameraIntrinsics(object):
         obj = CameraIntrinsics()
         obj.width = reader.readInt()
         obj.height = reader.readInt()
-        obj.intrinsics = _echo.readTensor(reader)
-        obj.distortion = _echo.readTensor(reader)
+        obj.intrinsics = _wrapper.readTensor(reader)
+        obj.distortion = _wrapper.readTensor(reader)
         return obj
 
     @staticmethod
     def write(writer, obj):
         writer.writeInt(obj.width)
         writer.writeInt(obj.height)
-        _echo.writeTensor(writer, obj.intrinsics)
-        _echo.writeTensor(writer, obj.distortion)
+        _wrapper.writeTensor(writer, obj.intrinsics)
+        _wrapper.writeTensor(writer, obj.distortion)
 
 class CameraExtrinsics(object):
 
@@ -49,17 +49,17 @@ class CameraExtrinsics(object):
     def read(reader):
         obj = CameraExtrinsics()
         obj.header = routio.readType(routio.Header, reader)
-        obj.rotation = _echo.readTensor(reader)
-        obj.translation = _echo.readTensor(reader)
+        obj.rotation = _wrapper.readTensor(reader)
+        obj.translation = _wrapper.readTensor(reader)
         return obj
 
     @staticmethod
     def write(writer, obj):
         routio.writeType(routio.Header, writer, obj.header)
-        _echo.writeTensor(writer, obj.rotation)
-        _echo.writeTensor(writer, obj.translation)
+        _wrapper.writeTensor(writer, obj.rotation)
+        _wrapper.writeTensor(writer, obj.translation)
 
-routio.registerType(numpy.array, _echo.readTensor, _echo.writeTensor)
+routio.registerType(numpy.array, _wrapper.readTensor, _wrapper.writeTensor)
 routio.registerType(CameraIntrinsics, CameraIntrinsics.read, CameraIntrinsics.write)
 routio.registerType(CameraExtrinsics, CameraExtrinsics.read, CameraExtrinsics.write)
 
@@ -73,13 +73,13 @@ class Frame(object):
     def read(reader):
         obj = Frame()
         obj.header = routio.readType(routio.Header, reader)
-        obj.image = _echo.readTensor(reader)
+        obj.image = _wrapper.readTensor(reader)
         return obj
 
     @staticmethod
     def write(writer, obj):
         routio.writeType(routio.Header, writer, obj.header)
-        _echo.writeTensor(writer, obj.image)
+        _wrapper.writeTensor(writer, obj.image)
 
 routio.registerType(Frame, Frame.read, Frame.write)
 

@@ -261,7 +261,7 @@ Server::Server(SharedIOLoop loop, const std::string& address) : loop(loop) {
 		if (getenv("ROUTIO_SOCKET") != NULL) {
 			taddress = string(getenv("ROUTIO_SOCKET"));
 		} else {
-			taddress = "/tmp/echo.sock";
+			taddress = "/tmp/routio.sock";
 		}
 	}
 

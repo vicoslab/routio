@@ -14,7 +14,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", action="store_true", default=False)
-    parser.add_argument("bind", nargs='?', default=os.environ.get("ROUTIO_SOCKET", "/tmp/echo.sock"))
+    parser.add_argument("bind", nargs='?', default=os.environ.get("ROUTIO_SOCKET", "/tmp/routio.sock"))
 
     try:
         args = parser.parse_args()

@@ -6,42 +6,42 @@ from __future__ import unicode_literals
 from builtins import super
 from future import standard_library
 standard_library.install_aliases()
-from routio import _echo
+from routio import _wrapper
 
-class ArraySubscriber(_echo.Subscriber):
+class ArraySubscriber(_wrapper.Subscriber):
 
     def __init__(self, client, alias, callback):
         def _read(message):
-            reader = _echo.MessageReader(message)
-            return _echo.readArray(reader)
+            reader = _wrapper.MessageReader(message)
+            return _wrapper.readArray(reader)
 
         super().__init__(client, alias, "array", lambda x: callback(_read(x)))
 
-class ArrayPublisher(_echo.Publisher):
+class ArrayPublisher(_wrapper.Publisher):
 
     def __init__(self, client, alias):
         super().__init__(client, alias, "array")
 
     def send(self, obj):
-        writer = _echo.MessageWriter()
-        _echo.writeArray(writer, obj)
+        writer = _wrapper.MessageWriter()
+        _wrapper.writeArray(writer, obj)
         super().send(writer)
 
-class TensorSubscriber(_echo.Subscriber):
+class TensorSubscriber(_wrapper.Subscriber):
 
     def __init__(self, client, alias, callback):
         def _read(message):
-            reader = _echo.MessageReader(message)
-            return _echo.readTensor(reader)
+            reader = _wrapper.MessageReader(message)
+            return _wrapper.readTensor(reader)
 
         super().__init__(client, alias, "tensor", lambda x: callback(_read(x)))
 
-class TensorPublisher(_echo.Publisher):
+class TensorPublisher(_wrapper.Publisher):
 
     def __init__(self, client, alias):
         super().__init__(client, alias, "tensor")
 
     def send(self, obj):
-        writer = _echo.MessageWriter()
-        _echo.writeTensor(writer, obj)
+        writer = _wrapper.MessageWriter()
+        _wrapper.writeTensor(writer, obj)
         super().send(writer)
