@@ -170,16 +170,21 @@ IF(BUILD_PYTHON)
 
 ELSE()
 
-    FILE(MAKE_DIRECTORY ${BUILD_PYTHON_DIR}/routio/routio)
+    FILE(MAKE_DIRECTORY ${BUILD_PYTHON_DIR}/routio/source)
+    FILE(MAKE_DIRECTORY ${BUILD_PYTHON_DIR}/routio/source/routio)
 
     ADD_CUSTOM_COMMAND(TARGET copy_library_python COMMAND 
         ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} 
-        ${CMAKE_COMMAND} -E copy ${LIBRARY_HEADERS} ${LIBRARY_SRC} src/python/wrapper.cpp src/algorithms.h src/debug.h
-        ${BUILD_PYTHON_DIR}/routio/routio)
-    ADD_CUSTOM_COMMAND(TARGET copy_library_python COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} ${CMAKE_COMMAND} -E copy ${LIBRARY_HEADERS} ${BUILD_PYTHON_DIR}/routio/routio)
+        ${CMAKE_COMMAND} -E copy ${LIBRARY_SRC} src/python/wrapper.cpp src/algorithms.h src/debug.h
+        ${BUILD_PYTHON_DIR}/routio/source)
+    ADD_CUSTOM_COMMAND(TARGET copy_library_python COMMAND 
+        ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} 
+        ${CMAKE_COMMAND} -E copy ${LIBRARY_HEADERS} 
+        ${BUILD_PYTHON_DIR}/routio/source/routio)
 
     # Create dummy __init__.py to make routio a package
-    FILE(WRITE ${BUILD_PYTHON_DIR}/routio/routio/__init__.py "# Dummy init file\n")
+    FILE(WRITE ${BUILD_PYTHON_DIR}/routio/source/__init__.py "# Dummy init file\n")
+    FILE(WRITE ${BUILD_PYTHON_DIR}/routio/source/routio/__init__.py "# Dummy init file\n")
 
 ENDIF()
 

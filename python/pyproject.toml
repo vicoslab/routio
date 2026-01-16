@@ -1,3 +1,51 @@
 [build-system]
 requires = ["setuptools", "wheel", "pybind11", "numpy"]   # or your build backend
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "routio"
+dynamic = ["version"]
+description = "Python package for routio IPC library"
+readme = "README.md"
+requires-python = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*"
+license = "MIT"
+authors = [
+    {name = "Luka Cehovin Zajc", email = "luka.cehovin@protonmail.com"}
+]
+keywords = ["ipc", "interprocess", "communication", "messaging", "rpc"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: C++",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 2.7",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: System :: IPC",
+]
+dependencies = [
+    "numpy>=1.16",
+    "jinja2",
+    "pyparsing",
+    "future",
+]
+
+[project.urls]
+Homepage = "https://github.com/vicoslab/routio"
+Documentation = "https://github.com/vicoslab/routio"
+"Source Code" = "https://github.com/vicoslab/routio"
+"Bug Tracker" = "https://github.com/vicoslab/routio/issues"
+
+[project.scripts]
+routio-daemon = "routio.__main__:main"
+routio-router = "routio.__main__:main"
+routio-generate = "routio.messages.cli:main"
+
+[project.entry-points.ignition]
+routio_remap = "routio.ignition:Mapping"
